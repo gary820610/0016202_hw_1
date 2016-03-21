@@ -1,25 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <time.h>
+using namespace std;
 
 void quicksort(int *data, int left, int right);
 void swap(int *a, int *b);
+double START,END;
 
 int main(void)
 {
-    int i, n, data[10];
+    int i, j, data[10000];
+	char s[10];
+	
+    cout<< "input: "<< endl;
+	
+    scanf("%s", s);
+ 	j=0;
+ 	
+ 	while(s[0]!='x')
+ 	{
+ 		data[j]=atoi (s);					//let input be array
+ 		scanf("%s", s);						//get input
+ 		j++;
+ 	}
+	
+    START = clock();						//time start
 
-    printf("total: ");
-    scanf("%d", &n);
-
-    for (i = 0; i < n; i++)
-        scanf("%d", &data[i]);
-
-    quicksort(data, 0, n - 1);
+    quicksort(data, 0, j);					//quicksort
 
     printf("\n result: ");
-    for (i = 0; i < n; i++)
+    for (i = 0; i < j; i++)
         printf("%d ", data[i]);
 
+	END = clock();							//end
+	
+	cout << endl << "進行運算所花費的時間：" << (END - START) / CLOCKS_PER_SEC << " S" << endl;
+	
     system("pause");
 }
 
@@ -27,7 +44,7 @@ void quicksort(int *data, int left, int right)
 {
     int pivot, i, j;
 
-    if (left >= right) { return; }
+    if (left >= right) { return; }			//if already in right sorted
 
     pivot = data[left];
 
@@ -58,7 +75,7 @@ void quicksort(int *data, int left, int right)
 
         if (i > j) { break; }
 
-        swap(&data[i], &data[j]);
+        swap(&data[i], &data[j]);			//swap
     }
 
     swap(&data[left], &data[j]);
@@ -73,3 +90,4 @@ void swap(int *a, int *b)
     *a = *b;
     *b = temp;
 }
+
