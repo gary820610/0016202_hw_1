@@ -10,7 +10,7 @@ double START,END;
 
 int main(void)
 {
-    int i, j, data[10000];
+    int i, j, data[10001];
 	char s[10];
 	
     cout<< "input: "<< endl;
@@ -27,7 +27,7 @@ int main(void)
 	
     START = clock();						//time start
 
-    quicksort(data, 0, j);					//quicksort
+    quicksort(data, 0, j-1);					//quicksort
 
     printf("\n result: ");
     for (i = 0; i < j; i++)
