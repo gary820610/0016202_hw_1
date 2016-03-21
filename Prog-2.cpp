@@ -46,7 +46,6 @@ void quicksort(int *data, int left, int right)
 
     if (left >= right) { return; }			//if already in right sorted
 
-    //pivot = data[left];
     if((data[(left+right)/2]<= data[right]&& data[left]<= data[(left+right)/2])|| (data[(left+right)/2]<= data[left]&& data[right]<= data[(left+right)/2]))
     	pivot = data[(left+right)/2];
 	else if((data[right]<= data[(left+right)/2]&& data[left]<= data[right])|| (data[right]<= data[left]&& data[(left+right)/2]<= data[right]))
@@ -54,7 +53,6 @@ void quicksort(int *data, int left, int right)
     else if((data[left]<= data[(left+right)/2]&& data[right]<= data[left])|| (data[left]<= data[right]&& data[(left+right)/2]<= data[left]))
     	pivot = data[left];
     
-    cout<<"pivot= "<<pivot<<endl;
     
 	i = left;
     j = right;
@@ -83,29 +81,20 @@ void quicksort(int *data, int left, int right)
 
         if (i > j) { break; }
 		
-		cout<<"swap "<<data[i]<<" "<<data[j]<<endl;
 		swap(&data[i], &data[j]);			//swap
 		
         
     }
-	cout<<"data[j]= "<<data[j]<<"j= "<<j<<endl;
-	cout<<"data[i]= "<<data[i]<<"i= "<<i<<endl;
+	
 	if(pivot== data[(left+right)/2]&& j>(left+right)/2)
-	{
-		cout<<"swap "<<data[(left+right)/2]<<" "<<data[j]<<endl;
 		swap(&data[(left+right)/2], &data[j]);
-	}
+
 	else if(pivot== data[left])
-	{
-		cout<<"swap "<<data[left]<<" "<<data[j]<<endl;
 		swap(&data[left], &data[j]);
-	}
+
 	    
 	else if(pivot== data[right]&& j>right)
-	{
-		cout<<"swap "<<data[right]<<" "<<data[j]<<endl;
 		swap(&data[right], &data[j]);
-	}
 	    
 
     quicksort(data, left, j - 1);
