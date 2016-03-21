@@ -10,7 +10,7 @@ double START,END;
 
 int main(void)
 {
-    int i, j, data[10001];
+    int i, j, data[10002];
 	char s[20];
 	
     cout<< "input: "<< endl;
@@ -87,18 +87,30 @@ void quicksort(int *data, int left, int right)
     }
 	
 	if(pivot== data[(left+right)/2]&& j>(left+right)/2)
+	{
 		swap(&data[(left+right)/2], &data[j]);
-
+		quicksort(data, left, j - 1);
+		quicksort(data, j + 1, right);
+	}
+	else if(pivot== data[(left+right)/2]&& i<(left+right)/2)
+	{
+		swap(&data[(left+right)/2], &data[i]);
+		quicksort(data, left, i - 1);
+		quicksort(data, i + 1, right);
+	}
 	else if(pivot== data[left])
+	{
 		swap(&data[left], &data[j]);
+		quicksort(data, left, j - 1);
+		quicksort(data, j + 1, right);
+	}
+	else if(pivot== data[right])
+	{
+		swap(&data[right], &data[i]);
+		quicksort(data, left, i - 1);
+		quicksort(data, i + 1, right);
+	}
 
-	    
-	else if(pivot== data[right]&& j>right)
-		swap(&data[right], &data[j]);
-	    
-
-    quicksort(data, left, j - 1);
-    quicksort(data, j + 1, right);
 }
 
 void swap(int *a, int *b)
