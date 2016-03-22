@@ -21,10 +21,10 @@ int main(void)
  	while(s[0]!='x')
  	{
  		data[j]=atoi (s);					//let input be array
- 		scanf("%s", s);						//get input
+		scanf("%s", s);						//get input
  		j++;
  	}
-	
+ 	
     START = clock();						//time start
 
     quicksort(data, 0, j-1);					//quicksort
@@ -35,30 +35,41 @@ int main(void)
 
 	END = clock();							//end
 	
-	cout << endl << "進行運算所花費的時間：" << (END - START) / CLOCKS_PER_SEC << " S" << endl;
+	cout << endl << "進行運算所花費的時間：" << (END - START) << " ms" << endl;
 	
     system("pause");
 }
 
 void quicksort(int *data, int left, int right)
 {
-    int pivot, i, j;
+    int pivot, i, j, p;
 
     if (left >= right) { return; }			//if already in right sorted
 
     if((data[(left+right)/2]<= data[right]&& data[left]<= data[(left+right)/2])|| (data[(left+right)/2]<= data[left]&& data[right]<= data[(left+right)/2]))
+    {
+    	p= (left+right)/2;
     	pivot = data[(left+right)/2];
+	}
+    	
 	else if((data[right]<= data[(left+right)/2]&& data[left]<= data[right])|| (data[right]<= data[left]&& data[(left+right)/2]<= data[right]))
-    	pivot = data[right];
+	{
+		p= right;
+		pivot = data[right];
+	}
+    	
     else if((data[left]<= data[(left+right)/2]&& data[right]<= data[left])|| (data[left]<= data[right]&& data[(left+right)/2]<= data[left]))
+    {
+    	p= left;
     	pivot = data[left];
-    
-    
+	}
+    	
 	i = left;
     j = right;
 
     while (1)
     {
+
         while (i <= right)
         {
             if (data[i] > pivot)
@@ -75,42 +86,54 @@ void quicksort(int *data, int left, int right)
             {
                 break;
             }
-
+            
             j = j - 1;
         }
 
-        if (i > j) { break; }
+        if (i >= j) { break; }
 		
 		swap(&data[i], &data[j]);			//swap
 		
-        
     }
-	
-	if(pivot== data[(left+right)/2]&& j>(left+right)/2)
-	{
-		swap(&data[(left+right)/2], &data[j]);
-		quicksort(data, left, j - 1);
-		quicksort(data, j + 1, right);
-	}
-	else if(pivot== data[(left+right)/2]&& i<(left+right)/2)
-	{
-		swap(&data[(left+right)/2], &data[i]);
-		quicksort(data, left, i - 1);
-		quicksort(data, i + 1, right);
-	}
-	else if(pivot== data[left])
-	{
-		swap(&data[left], &data[j]);
-		quicksort(data, left, j - 1);
-		quicksort(data, j + 1, right);
-	}
-	else if(pivot== data[right])
-	{
-		swap(&data[right], &data[i]);
-		quicksort(data, left, i - 1);
-		quicksort(data, i + 1, right);
-	}
 
+	if(p== left&& j== p)						//left=j=p<i
+	{
+		quicksort(data, i, right);
+	}
+	else if(p== left&& j>p)						//left=p<j<i
+	{
+		swap(&data[p], &data[j]);
+		quicksort(data, left, j - 1);
+		quicksort(data, j + 1, right);
+	}
+	else if(p== (left+right)/2&& j>p)			//left<p<j<i
+	{
+		swap(&data[p], &data[j]);
+		quicksort(data, left, j - 1);
+		quicksort(data, j + 1, right);
+	}
+	else if(p== (left+right)/2&& j<p&& i>p)		//left ? j<p<i
+	{
+		quicksort(data, left, j);
+		quicksort(data, i, right);
+	}
+	else if(p== (left+right)/2&& i<p)			//left?j<i<p
+	{
+		swap(&data[p], &data[i]);
+		quicksort(data, left, i-1);
+		quicksort(data, i + 1, right);
+	}
+	else if(p== right&& i>right)				//right=p<i
+	{
+		quicksort(data, left, j);
+	}
+	else if(p== right&& i<p)					//i<p=right
+	{
+		swap(&data[p], &data[i]);
+		quicksort(data, left, i-1);
+		quicksort(data, i + 1, right);
+	}
+	
 }
 
 void swap(int *a, int *b)
