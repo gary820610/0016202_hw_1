@@ -35,7 +35,7 @@ int main(void)
 
 	END = clock();							//end
 	
-	cout << endl << "進行運算所花費的時間：" << (END - START) / CLOCKS_PER_SEC << " S" << endl;
+	cout << endl << "進行運算所花費的時間：" << (END - START) << " ms" << endl;
 	
     system("pause");
 }
