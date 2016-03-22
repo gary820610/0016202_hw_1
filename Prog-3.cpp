@@ -35,7 +35,7 @@ int main(void)
 
 	END = clock();							//end
 	
-	cout << endl << "進行運算所花費的時間：" << (END - START) / CLOCKS_PER_SEC << " S" << endl;
+	cout << endl << "進行運算所花費的時間：" << (END - START)<< " ms" << endl;
 	
     system("pause");
 }
@@ -44,7 +44,7 @@ void quicksort(int *data, int left, int right)
 {
     int pivot, i, j;
     int pivot_1, pivot_2, pivot_3, n, m;
-    int p1, p2, p3;
+    int p1, p2, p3, pp;
 
     if (left >= right) { return; }			//if already in right sorted
     
@@ -188,7 +188,7 @@ void quicksort(int *data, int left, int right)
     		
     	if((data[(left+right)/2]<= data[right-m-1]&& data[left+m+1]<= data[(left+right)/2])|| (data[(left+right)/2]<= data[left+m+1]&& data[right-m-1]<= data[(left+right)/2]))
     	{
-    		p3= (left+right)/2;
+    		p2= (left+right)/2;
     		pivot_2 = data[(left+right)/2];
 		}
 		else if((data[right-m-1]<= data[(left+right)/2]&& data[left+m+1]<= data[right-m-1])|| (data[right-m-1]<= data[left+m+1]&& data[(left+right)/2]<= data[right-m-1]))
@@ -202,28 +202,26 @@ void quicksort(int *data, int left, int right)
 	    	pivot_2 = data[left+m+1];
 		}
 	}
-
-	cout<<"pivot1= "<<pivot_1<<" pivot2= "<<pivot_2<<" pivot3= "<<pivot_3<<endl;
-
-    //pivot = data[left];
-    /*if((data[(left+right)/2]<= data[right]&& data[left]<= data[(left+right)/2])|| (data[(left+right)/2]<= data[left]&& data[right]<= data[(left+right)/2]))
-    	pivot = data[(left+right)/2];
-	else if((data[right]<= data[(left+right)/2]&& data[left]<= data[right])|| (data[right]<= data[left]&& data[(left+right)/2]<= data[right]))
-    	pivot = data[right];
-    else if((data[left]<= data[(left+right)/2]&& data[right]<= data[left])|| (data[left]<= data[right]&& data[(left+right)/2]<= data[left]))
-    	pivot = data[left];*/
+	
     if((pivot_2<= pivot_3&& pivot_1<= pivot_2)|| (pivot_2<= pivot_1&& pivot_3<= pivot_2))
+    {
+    	pp= p2;
     	pivot = pivot_2;
+	}
 	else if((pivot_3<= pivot_2&& pivot_1<= pivot_3)|| (pivot_3<= pivot_1&& pivot_2<= pivot_3))
-    	pivot = pivot_3;
+	{
+		pp= p3;
+		pivot = pivot_3;
+	}	
     else if((pivot_1<= pivot_2&& pivot_3<= pivot_1)|| (pivot_1<= pivot_3&& pivot_2<= pivot_1))
+    {
+    	pp= p1;
     	pivot = pivot_1;
-    
-    
-    cout<<"pivot= "<<pivot<<endl;
+	}
     
 	i = left;
     j = right;
+
 
     while (1)
     {
@@ -246,79 +244,49 @@ void quicksort(int *data, int left, int right)
 
             j = j - 1;
         }
-
         if (i >= j) { break; }
 		
-		cout<<"swap1 "<<data[i]<<" "<<data[j]<<endl;
 		swap(&data[i], &data[j]);			//swap
 		
         
     }
-	cout<<"data[j]= "<<data[j]<<"j= "<<j<<endl;
-	cout<<"data[i]= "<<data[i]<<"i= "<<i<<endl;
-
-	if(pivot== data[p1]&& j> p1)
+    
+	if(pp== left&& j== pp)						//left=j=p<i
 	{
-		cout<<"swap2 "<<data[p1]<<" "<<data[j]<<endl;
-		swap(&data[p1], &data[j]);
+		quicksort(data, i, right);
+	}
+	else if(pp== left&& j>pp)						//left=p<j<i
+	{
+		swap(&data[pp], &data[j]);
 		quicksort(data, left, j - 1);
-    	quicksort(data, j + 1, right);
+		quicksort(data, j + 1, right);
 	}
-	if(pivot== data[p1]&& j== p1)							//for j = left
+	else if(pp> left&& pp< right&& j<pp&& i>pp)		//left ? j<p<i
 	{
-		cout<<"swap2 "<<data[p1]<<" "<<data[j]<<endl;
-		swap(&data[p1], &data[j]);
 		quicksort(data, left, j);
-    	quicksort(data, j + 1, right);
+		quicksort(data, i, right);
 	}
-	else if(pivot== data[p1]&& i< p1)
+	else if(pp> left&& pp< right&& j>pp)			//left<p<j<i
 	{
-		cout<<"swap2 "<<data[p1]<<" "<<data[i]<<endl;
-		swap(&data[p1], &data[i]);
-		quicksort(data, left, i - 1);
-   		quicksort(data, i + 1, right);
-	}
-	else if(pivot== data[p2]&& j> p2)
-	{
-		cout<<"swap2 "<<data[p2]<<" "<<data[j]<<endl;
-		swap(&data[p2], &data[j]);
+		swap(&data[pp], &data[j]);
 		quicksort(data, left, j - 1);
-    	quicksort(data, j + 1, right);
+		quicksort(data, j + 1, right);
 	}
-	else if(pivot== data[p2]&& j== p2)
+	else if(pp> left&& pp< right&& i<pp)			//left?j<i<p
 	{
-		cout<<"swap2 "<<data[p2]<<" "<<data[j]<<endl;
-		swap(&data[p2], &data[j]);
+		swap(&data[pp], &data[i]);
+		quicksort(data, left, i-1);
+		quicksort(data, i + 1, right);
+	}
+	else if(pp== right&& i>right)				//right=p<i
+	{
 		quicksort(data, left, j);
-    	quicksort(data, j + 1, right);
 	}
-	else if(pivot== data[p2]&& i< p2)
+	else if(pp== right&& i<pp)					//i<p=right
 	{
-		cout<<"swap2 "<<data[p2]<<" "<<data[i]<<endl;
-		swap(&data[p2], &data[i]);
-		quicksort(data, left, i - 1);
-   		quicksort(data, i + 1, right);
-	}
-	else if(pivot== data[p3]&& j> p3)
-	{
-		cout<<"swap2 "<<data[p3]<<" "<<data[j]<<endl;
-		swap(&data[p3], &data[j]);
-		quicksort(data, left, j - 1);
-    	quicksort(data, j + 1, right);
-	}
-	else if(pivot== data[p3]&& j== p3)
-	{
-		cout<<"swap2 "<<data[p3]<<" "<<data[j]<<endl;
-		swap(&data[p3], &data[j]);
-		quicksort(data, left, j);
-    	quicksort(data, j + 1, right);
-	}
-	else if(pivot== data[p3]&& i< p3)
-	{
-		cout<<"swap2 "<<data[p3]<<" "<<data[i]<<endl;
-		swap(&data[p3], &data[i]);
-		quicksort(data, left, i - 1);
-   		quicksort(data, i + 1, right);
+		swap(&data[pp], &data[i]);
+		quicksort(data, left, i-1);
+		quicksort(data, i + 1, right);
 	}
 
 }
